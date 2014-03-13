@@ -2,4 +2,7 @@
 .libs
 *.lo
 *.la
+standalone_test
+standalone_test_simple
+*.dSYM/
 

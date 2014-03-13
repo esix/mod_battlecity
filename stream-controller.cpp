@@ -136,8 +136,11 @@ void StreamController::start()
 
 
   _audio_frame.codec = &codec;
-  _audio_frame.data = aud_buffer;
-  _audio_frame.buflen = SWITCH_RECOMMENDED_BUFFER_SIZE;
+  _audio_frame.packet = aud_buffer;
+  _audio_frame.data = aud_buffer + 12;
+  _audio_frame.buflen = SWITCH_RECOMMENDED_BUFFER_SIZE - 12;
+  switch_set_flag((&_audio_frame), SFF_RAW_RTP);
+  switch_set_flag((&_audio_frame), SFF_PROXY_PACKET);
 
   _video_frame.codec = &vid_codec;
   _video_frame.packet = vid_buffer;
@@ -191,9 +194,9 @@ void StreamController::start()
 
   {
     //
-    // run video
+    // run video + audio
     //
-    //GstAudio gstAudio(this);
+    GstAudio gstAudio(this);
     GstVideo gstVideo(this, this, video_codec);
 
 
