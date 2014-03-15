@@ -180,8 +180,6 @@ void Player::command_move(Orientation orientation)
     if(is_moving())
       stop_moving();
     _orientation = orientation;
-    g_print ("changed orientation=%d\n", _orientation);
-    g_print ("Screen coord=%d %d\n", get_screen_center_x(), get_screen_center_y());
   }
 }
 
@@ -318,6 +316,18 @@ player_t World::add_player()
     pthread_rwlock_unlock(&_lock);
   }
   return player;
+}
+
+void World::remove_player(const player_t& player)
+{
+  pthread_rwlock_wrlock(&_lock);
+  for (std::vector<player_t>::iterator it = _players.begin(); it != _players.end(); ++it) {
+    if (*it == player) {
+      _players.erase(it);
+      break;
+    }
+  }
+  pthread_rwlock_unlock(&_lock);
 }
 
 explosion_t World::add_explosion(int x, int y, int dx, int dy)

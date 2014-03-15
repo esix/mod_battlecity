@@ -31,6 +31,9 @@ private:
   switch_frame_t          _video_frame;
 	switch_payload_t        _video_pt;
 
+	int                     _video_rtp_sock;
+	struct sockaddr_in      _video_rtp_addr;
+
 	Renderer              * _renderer;
 	std::shared_ptr<Player> _player;
 };

@@ -1,7 +1,12 @@
 #include "gst-helper.h"
 #include "renderer.h"
+#include <stdio.h>
 
 using namespace std;
+
+static int g_video_frames_in = 0;
+static int g_video_frames_out = 0;
+static int g_audio_frames_out = 0;
 
 
 
@@ -9,8 +14,8 @@ using namespace std;
 // fmtp:99 profile-level-id=42800D; packetization-mode=0; max-mbps=11880
 
 #define GST_PIPELINE_START "appsrc name=src ! video/x-raw,format=RGB,bpp=24,depth=24,width=" SWIDTH ",height=" SHEIGHT ",pixel-aspect-ratio=1/1,framerate=15/1 ! videoconvert"
-#define GST_PIPELINE_H264 "x264enc byte-stream=true bframes=0 b-adapt=0 tune=0x4 speed-preset=3 bitrate=256 sliced-threads=false  ! video/x-h264,framerate=15/1,stream-format=byte-stream,profile=baseline ! rtph264pay mtu=1412"
-#define GST_PIPELINE_H263_1998 "avenc_h263p ! video/x-h263 ! rtph263ppay mtu=1412"
+#define GST_PIPELINE_H264 "x264enc pass=cbr bitrate=1024 byte-stream=true bframes=0 key-int-max=5 tune=zerolatency speed-preset=ultrafast ! video/x-h264,stream-format=byte-stream,profile=baseline ! rtph264pay mtu=1200 config-interval=1"
+#define GST_PIPELINE_H263_1998 "avenc_h263p ! video/x-h263"
 #define GST_PIPELINE_END "appsink name=sink"
 
 
@@ -24,7 +29,7 @@ GstAudio::GstAudio(IAudioSender *sender) : _sender(sender)
   GstElement * sink;
   GstElement * src;
   GError *error = NULL;
-  const gchar *descr = "audiotestsrc ! alawenc ! rtppcmapay ! appsink name=sink";
+  const gchar *descr = "audiotestsrc wave=4 ! alawenc ! rtppcmapay ! appsink name=sink";  // wave=4 = silence
 
   _pipeline = gst_parse_launch (descr, &error);
 
@@ -150,8 +155,11 @@ gboolean GstVideo::cb_need_data(GstElement *appsrc, guint unused_size, gpointer 
 
   vector<char> video_data = gst_video->_provider->get_video_buffer();
 
-
+  g_video_frames_in++;
   guint size = video_data.size();
+  if (g_video_frames_in % 30 == 1) {
+    fprintf(stderr, "VIDEO cb_need_data: frame=%d size=%d\n", g_video_frames_in, size);
+  }
 
   buffer = gst_buffer_new_and_alloc (size);
   gst_buffer_map (buffer, &info, GST_MAP_WRITE);
@@ -226,6 +234,11 @@ GstFlowReturn GstVideo::on_new_sample_from_sink (GstElement * elt, void * data)
     gsize size = map.size;
 
     gstVideo->_sender->send_video_packet(map.data, map.size);
+
+    g_video_frames_out++;
+    if (g_video_frames_out % 30 == 1) {
+      fprintf(stderr, "VIDEO on_new_sample: frame=%d rtp_size=%d\n", g_video_frames_out, (int)map.size);
+    }
 
     gst_buffer_unmap (buffer, &map);
     gst_sample_unref (sample);

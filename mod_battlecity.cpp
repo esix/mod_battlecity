@@ -49,15 +49,20 @@ SWITCH_STANDARD_APP(play_battlecity_function)
 	std::shared_ptr<Player> player = world->add_player();
 	StreamController streamController(session, renderer, player);
 	streamController.start();
+	world->remove_player(player);
 }
 
 /* Registration */
 
 SWITCH_MODULE_LOAD_FUNCTION(mod_battlecity_load)
 {
+	switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_NOTICE, "mod_battlecity: starting load\n");
+
 	gst_init (NULL, NULL);
+	switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_NOTICE, "mod_battlecity: gst_init done\n");
 
 	int result = pthread_create(&world_thread, NULL, world_thread_func, NULL);
+	switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_NOTICE, "mod_battlecity: world thread created (result=%d)\n", result);
 
 	switch_application_interface_t *app_interface;
 	switch_file_interface_t *file_interface;
@@ -67,6 +72,8 @@ SWITCH_MODULE_LOAD_FUNCTION(mod_battlecity_load)
 	*module_interface = switch_loadable_module_create_module_interface(pool, modname);
 
 	SWITCH_ADD_APP(app_interface, "play_battlecity", "play battlecity", "play battlecity", play_battlecity_function, "<file>", SAF_NONE);
+
+	switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_NOTICE, "mod_battlecity: load complete\n");
 
 	/* indicate that the module should continue to be loaded */
 	return SWITCH_STATUS_SUCCESS;
