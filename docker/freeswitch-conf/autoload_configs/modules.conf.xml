@@ -1,0 +1,25 @@
+<configuration name="modules.conf" description="Modules">
+  <modules>
+    <!-- Loggers -->
+    <load module="mod_console"/>
+    <load module="mod_logfile"/>
+
+    <!-- Endpoints -->
+    <load module="mod_sofia"/>
+
+    <!-- Dialplan -->
+    <load module="mod_dialplan_xml"/>
+
+    <!-- Codecs -->
+    <load module="mod_g711"/>
+    <load module="mod_h26x"/>
+    <load module="mod_opus"/>
+
+    <!-- DTMF -->
+    <load module="mod_dptools"/>
+
+    <!-- Applications -->
+    <load module="mod_commands"/>
+    <load module="mod_battlecity"/>
+  </modules>
+</configuration>

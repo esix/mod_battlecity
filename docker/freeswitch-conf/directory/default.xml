@@ -1,0 +1,43 @@
+<domain name="$${domain}">
+  <params>
+    <param name="dial-string" value="{presence_id=${dialed_user}@${dialed_domain}}${sofia_contact(${dialed_user}@${dialed_domain})}"/>
+  </params>
+  <groups>
+    <group name="default">
+      <users>
+        <user id="1000">
+          <params>
+            <param name="password" value="1234"/>
+          </params>
+          <variables>
+            <variable name="user_context" value="default"/>
+          </variables>
+        </user>
+        <user id="1001">
+          <params>
+            <param name="password" value="1234"/>
+          </params>
+          <variables>
+            <variable name="user_context" value="default"/>
+          </variables>
+        </user>
+        <user id="1002">
+          <params>
+            <param name="password" value="1234"/>
+          </params>
+          <variables>
+            <variable name="user_context" value="default"/>
+          </variables>
+        </user>
+        <user id="1003">
+          <params>
+            <param name="password" value="1234"/>
+          </params>
+          <variables>
+            <variable name="user_context" value="default"/>
+          </variables>
+        </user>
+      </users>
+    </group>
+  </groups>
+</domain>

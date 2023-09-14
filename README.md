@@ -21,6 +21,13 @@ applications/mod_battlecity
 
 Build FreeSWITCH as usual, module will be compiled.
 
+## Docker
+
+```bash
+docker build -t battlecity .
+docker run --rm --network host battlecity
+```
+
 ## Standalone test
 
 ```bash

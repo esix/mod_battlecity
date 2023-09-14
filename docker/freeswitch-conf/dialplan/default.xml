@@ -1,0 +1,18 @@
+<context name="default">
+
+  <!-- Battle City game: dial 9999 -->
+  <extension name="battlecity">
+    <condition field="destination_number" expression="^9999$">
+      <action application="play_battlecity" data=""/>
+    </condition>
+  </extension>
+
+  <!-- Echo test: dial 9196 -->
+  <extension name="echo">
+    <condition field="destination_number" expression="^9196$">
+      <action application="answer"/>
+      <action application="echo"/>
+    </condition>
+  </extension>
+
+</context>

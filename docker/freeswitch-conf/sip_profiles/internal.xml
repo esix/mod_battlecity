@@ -1,0 +1,35 @@
+<profile name="internal">
+  <settings>
+    <param name="debug" value="0"/>
+    <param name="sip-port" value="5060"/>
+    <param name="sip-ip" value="$${local_ip_v4}"/>
+    <param name="rtp-ip" value="$${local_ip_v4}"/>
+    <param name="ext-rtp-ip" value="$${local_ip_v4}"/>
+    <param name="ext-sip-ip" value="$${local_ip_v4}"/>
+
+    <param name="context" value="default"/>
+    <param name="dialplan" value="XML"/>
+
+    <!-- Codec preferences: audio + video -->
+    <param name="inbound-codec-prefs" value="PCMA,PCMU,OPUS,H264,H263-1998,H263,VP8"/>
+    <param name="outbound-codec-prefs" value="PCMA,PCMU,OPUS,H264,H263-1998,H263,VP8"/>
+    <param name="inbound-codec-negotiation" value="generous"/>
+
+    <!-- Allow video -->
+    <param name="inbound-late-negotiation" value="false"/>
+
+    <!-- Auth -->
+    <param name="challenge-realm" value="auto_from"/>
+    <param name="accept-blind-reg" value="true"/>
+    <param name="accept-blind-auth" value="true"/>
+
+    <!-- DTMF -->
+    <param name="dtmf-type" value="rfc2833"/>
+
+    <!-- NAT -->
+    <param name="apply-nat-acl" value="nat.auto"/>
+
+    <!-- RTP timer -->
+    <param name="rtp-timer-name" value="soft"/>
+  </settings>
+</profile>
