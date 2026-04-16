@@ -9,6 +9,16 @@ graph LR
     FS <-- "H.264 video<br/>PCMA audio<br/>DTMF control" --> P3["Player N<br/>(any SIP client)"]
 ```
 
+## Demo
+
+### Viewing the game board (Jitsi client)
+
+https://github.com/user-attachments/assets/ecec401c-3102-42d5-9344-f01ceac67c45
+
+### Controlling the tank (Linphone + Jitsi multiplayer)
+
+https://github.com/user-attachments/assets/a621618c-55ef-467d-a362-9c1cbc55b8c8
+
 ## How it works
 
 1. User makes a **video call** to extension 9999 on the FreeSWITCH server
